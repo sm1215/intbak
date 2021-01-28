@@ -1,0 +1,18 @@
+[package]
+name = "intbak"
+version = "0.1.0"
+authors = ["sm1215 <sm1215@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "intbak"
+path = "src/lib.rs"
+
+[[bin]]
+name = "intbak"
+path = "src/bin.rs"
+
+[dependencies]
+structopt = "0.3.13"
