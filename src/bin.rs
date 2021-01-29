@@ -1,4 +1,8 @@
 use structopt::StructOpt;
+use std::fs;
+use std::path::Path;
+use chrono::prelude::*;
+mod lib;
 
 #[derive(StructOpt, Debug)]
 struct Cli {
@@ -6,11 +10,35 @@ struct Cli {
     source: std::path::PathBuf,
 }
 
-// TODO: hookup user input so they can provide their own source
+/// usage: intbak -- <wow_source>
 pub fn main() {
     let args = Cli::from_args();
-    println!("args {:?}", args);
-    // let filename = match args {
-    //     "filename" => 
-    // }
+    let mode = "_retail_";
+    // supporting only retail for now
+    let mut source_base = args.source.clone();
+    source_base.push(mode.clone());
+
+    let mut destination_base = args.source.clone();
+    destination_base.push("interface_backups");
+    destination_base.push(mode.clone());
+
+    let snapshot = get_unix_timestamp_ms();
+
+    let targets = vec!["Cache", "Interface", "WTF"];
+    
+    for entry in targets {
+        let mut source = source_base.clone();
+            source.push(entry);
+        let mut destination = destination_base.clone();
+            destination.push(&snapshot.to_string());
+            destination.push(entry);
+        let _result = lib::copy_directory_contents(&source, &destination);
+        lib::copy_directory_contents(&source, &destination);
+    }
 }
+
+pub fn get_unix_timestamp_ms() -> i64 {
+    let now = Utc::now();
+    now.timestamp_millis()
+}
+
