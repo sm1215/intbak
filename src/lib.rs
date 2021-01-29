@@ -9,11 +9,13 @@ pub fn create_nested_directory(path: &PathBuf) -> io::Result<()> {
 
 pub fn copy_file(source: &PathBuf, destination: &PathBuf) -> io::Result<()> {
     println!("copying {:?} to {:?}", source, destination);
-    println!("destination exists? {:#?}, path {:#?}", destination.exists(), destination);
-    if !destination.exists() {
-        create_nested_directory(&destination)?;
+    let mut destination_dir = destination.clone();
+    destination_dir.pop();
+    if !destination_dir.exists() {
+        create_nested_directory(&destination_dir)?;
     }
-    fs::copy(source, destination)?;
+    let copy_file_result = fs::copy(source, destination);
+    println!("copy result: {:?}", copy_file_result);
     Ok(())
 }
 
