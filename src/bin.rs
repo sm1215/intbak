@@ -32,8 +32,7 @@ pub fn main() {
         let mut destination = destination_base.clone();
             destination.push(&snapshot.to_string());
             destination.push(entry);
-        let _result = lib::copy_directory_contents(&source, &destination);
-        lib::copy_directory_contents(&source, &destination);
+        let _r = lib::copy_directory_contents(&source, &destination);
     }
 }
 
