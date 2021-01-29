@@ -8,12 +8,18 @@ mod lib;
 struct Cli {
     #[structopt(parse(from_os_str))]
     source: std::path::PathBuf,
+    #[structopt(short, long)]
+    classic: bool,
 }
 
 /// usage: intbak -- <wow_source>
 pub fn main() {
     let args = Cli::from_args();
-    let mode = "_retail_";
+    let mode = match args.classic {
+        // TODO: verify class folder name
+        true => "_classic_",
+        false => "_retail_",
+    };
     // supporting only retail for now
     let mut source_base = args.source.clone();
     source_base.push(mode.clone());
