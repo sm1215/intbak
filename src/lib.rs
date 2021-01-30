@@ -1,8 +1,41 @@
 use std::path::{PathBuf};
 use std::{fs, io};
 
+// #[derive(Debug)]
+// enum ListDebug {
+//     Enabled(bool),
+//     Pipe,
+// }
+
+// /// Wheter to print verbosely 
+// impl Default for ListDebug {
+//     fn default() -> Self {
+//         ListDebug::Enabled(false)
+//     }
+//     // fn new(is_enabled: bool) -> Self {
+//     //     ListDebug::Enabled(is_enabled)
+//     // }
+//     // fn new(is_enabled: bool) -> Self {
+//     //     return Self {
+//     //         is_enabled
+//     //     }
+//     // }
+// }
+
+// impl ListDebug {
+//     fn pipe(message: String) {
+//         match ListDebug::Enabled {
+//             Some(bool) => println!("{:?}", message),
+//             None => None,
+//         }
+//     }
+// }
+
 pub fn create_nested_directory(path: &PathBuf) -> io::Result<()> {
-    println!("creating directory {:#?}", path);
+    // if ListDebug::is_enabled() {
+    //     println!("creating directory {:#?}", path);
+    // }
+    // ListDebug::pipe(format!("creating directory {:#?}", path));
     fs::create_dir_all(path)?;
     Ok(())
 }
@@ -64,3 +97,12 @@ pub fn copy_directory_contents(source: &PathBuf, destination: &PathBuf) -> io::R
     Ok(())
 }
 
+pub fn run_backup(source: PathBuf, destination: PathBuf, targets: Vec<&str>) {
+    for entry in targets {
+        let mut source = source.clone();
+            source.push(entry);
+        let mut destination = destination.clone();
+            destination.push(entry);
+        let _r = copy_directory_contents(&source, &destination);
+    }
+}
