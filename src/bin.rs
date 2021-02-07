@@ -6,11 +6,13 @@ mod lib;
 
 #[derive(StructOpt, Debug)]
 struct Cli {
-    #[structopt(parse(from_os_str))]
+    #[structopt(default_value = "z:/World of Warcraft", parse(from_os_str))]
     source: std::path::PathBuf,
     #[structopt(short, long)]
     classic: bool,
-    // #[] //TODO: Possible to input a list?
+    #[structopt(short, long)]
+    debug: bool,
+    // #[] //TODO: Possible to input a list for additional target dirs?
 }
 
 #[derive(Debug)]
@@ -58,9 +60,12 @@ pub fn main() {
     let snapshot = Snapshot::when();
     destination_base.push(&snapshot.to_string());
 
+    // TODO: setup these as a default,
+    // optionally accept args from cli
     let targets = vec!["Cache", "Interface", "WTF"];
 
-    lib::run_backup(source_base, destination_base, targets);
+    // TODO: pass a Snapshot over after source and dest are moved
+    lib::run_backup(source_base, destination_base, targets, args.debug);
     println!("complete.");
 }
 

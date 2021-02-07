@@ -1,54 +1,44 @@
 use std::path::{PathBuf};
 use std::{fs, io};
 
-// #[derive(Debug)]
-// enum ListDebug {
-//     Enabled(bool),
-//     Pipe,
+// struct PrintDebug {
+//     enabled: bool,
 // }
 
-// /// Wheter to print verbosely 
-// impl Default for ListDebug {
-//     fn default() -> Self {
-//         ListDebug::Enabled(false)
+// impl PrintDebug {
+//     pub fn new(enabled: bool) -> Self {
+//         Self {
+//             enabled
+//         }
 //     }
-//     // fn new(is_enabled: bool) -> Self {
-//     //     ListDebug::Enabled(is_enabled)
-//     // }
-//     // fn new(is_enabled: bool) -> Self {
-//     //     return Self {
-//     //         is_enabled
-//     //     }
-//     // }
-// }
-
-// impl ListDebug {
-//     fn pipe(message: String) {
-//         match ListDebug::Enabled {
-//             Some(bool) => println!("{:?}", message),
-//             None => None,
+//     pub fn pipe(&self, message: String) {
+//         if self.enabled {
+//             println!("{:?}", message)
 //         }
 //     }
 // }
 
 pub fn create_nested_directory(path: &PathBuf) -> io::Result<()> {
-    // if ListDebug::is_enabled() {
-    //     println!("creating directory {:#?}", path);
-    // }
-    // ListDebug::pipe(format!("creating directory {:#?}", path));
+    // PrintDebug::pipe(format!("creating directory {:#?}", path));
     fs::create_dir_all(path)?;
     Ok(())
 }
 
 pub fn copy_file(source: &PathBuf, destination: &PathBuf) -> io::Result<()> {
-    println!("copying {:?} to {:?}", source, destination);
+    // list_debug(
+    //     format!("copying {:?} to {:?}", source, destination),
+    //     debug,
+    // );
     let mut destination_dir = destination.clone();
     destination_dir.pop();
     if !destination_dir.exists() {
         create_nested_directory(&destination_dir)?;
     }
     let copy_file_result = fs::copy(source, destination);
-    println!("copy result: {:?}", copy_file_result);
+    // list_debug(
+    //     format!("copy result: {:?}", copy_file_result),
+    //     debug,
+    // );
     Ok(())
 }
 
@@ -62,7 +52,9 @@ pub fn set_write_perms(path: &PathBuf) {
 }
 
 pub fn copy_directory_contents(source: &PathBuf, destination: &PathBuf) -> io::Result<()> {
-    println!("\nentering source {:#?}", source);
+    // if debug {
+    //     println!("\nentering source {:#?}", source);
+    // }
 
     for entry in fs::read_dir(source)? {
         let entry = entry?;
@@ -97,7 +89,8 @@ pub fn copy_directory_contents(source: &PathBuf, destination: &PathBuf) -> io::R
     Ok(())
 }
 
-pub fn run_backup(source: PathBuf, destination: PathBuf, targets: Vec<&str>) {
+pub fn run_backup(source: PathBuf, destination: PathBuf, targets: Vec<&str>, debug: bool) {
+    // let debugger = PrintDebug::new(debug);
     for entry in targets {
         let mut source = source.clone();
             source.push(entry);
