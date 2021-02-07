@@ -1,4 +1,7 @@
 # intbak
+need to provide a source argument (path to wow installation) when running.
+ex. `intbak.exe -- --source="C:\World of Warcraft"`
+
 utility for backing up wow interfaces. intended to be used on win10 systems for now.
 when running tests, use `--test-threads=1` because the tests for this utility revolve around fs reading / writing and running tests in async can run things out of order.
 # todo
